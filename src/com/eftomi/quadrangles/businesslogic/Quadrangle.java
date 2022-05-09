@@ -2,6 +2,8 @@ package com.eftomi.quadrangles.businesslogic;
 
 import com.eftomi.quadrangles.enums.UOM;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public abstract class Quadrangle implements IQuadrangle {
@@ -10,22 +12,23 @@ public abstract class Quadrangle implements IQuadrangle {
         IQuadrangle IQuadrangle = null;
         switch (select) {
             case 1:
-                IQuadrangle = new Rectangle();
+                IQuadrangle = new Square();
                 break;
             case 2:
-                System.out.println("Hajrá!");
+                IQuadrangle = new Rectangle();
                 break;
             case 3:
-                System.out.println("Hajrá!");
+                IQuadrangle = new Parallelogram();
                 break;
             case 4:
-                System.out.println("Hajrá!");
+                IQuadrangle = new Rhombus();
                 break;
             case 5:
-                System.out.println("Hajrá!");
+                IQuadrangle = new Deltoid();
                 break;
             case 0:
-                System.out.println("Hajrá!");
+                System.out.println("\nI hope you enjoyed this app. :-)");
+                System.exit(0);
                 break;
         }
         return IQuadrangle;
@@ -65,7 +68,7 @@ public abstract class Quadrangle implements IQuadrangle {
         boolean negative;
         for (String parameter : parameters) {
             do {
-                System.out.printf("Please enter the value of %s in (%s): ", parameter, UOM);
+                System.out.printf("Please enter the value of %s (%s): ", parameter, UOM);
                 num = scanner.nextDouble();
                 negative = num < 0;
                 if (negative) {
@@ -75,6 +78,22 @@ public abstract class Quadrangle implements IQuadrangle {
             quadrangleData.put(parameter, num);
         }
         return quadrangleData;
+    }
+
+    public void actualQuadrangle() {
+        System.out.println("\nYou choose " + toString() + ".");
+    }
+
+    public double roundedResult(double rawDouble) {
+        BigDecimal bigDecimal = new BigDecimal(rawDouble)
+                .setScale(2, RoundingMode.CEILING);
+        return bigDecimal.doubleValue();
+    }
+
+    public void printResults(double area, double perimeter, String UOM) {
+        System.out.println("\nThe results of the calculation is the next:");
+        System.out.println("\tThe perimeter of the " + toString() + " is " + roundedResult(perimeter) + UOM + ".");
+        System.out.println("\tThe area of the " + toString() + " is " + roundedResult(area) + UOM + "^2.\n");
     }
 
 }

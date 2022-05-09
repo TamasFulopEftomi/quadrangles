@@ -2,20 +2,40 @@ package com.eftomi.quadrangles.businesslogic;
 
 import java.util.*;
 
-// perimeter P = 2 * (l + W)
-// area A = w * l
 public class Rectangle extends Quadrangle {
     private Scanner scanner;
     private String UOM;
     private List<String> parameters = Arrays.asList("width", "length");
+    private Map<String, Double> quadrangleData;
+    private double area;
+    private double perimeter;
 
     @Override
-    public void computeWithQuadranleData(Scanner scanner) {
-        System.out.println("You choose " + toString() +".");
+    public void computeWithQuadrangleData(Scanner scanner) {
+        actualQuadrangle();
         UOM = super.readUOM(scanner);
-        Map<String, Double> quadrangleData = readQuadrangleData(scanner, parameters, UOM);
+        quadrangleData = readQuadrangleData(scanner, parameters, UOM);
+        countPerimeter();
+        countArea();
+        printResults(area, perimeter, UOM);
+    }
+
+    @Override
+    public void countPerimeter() {
+        // perimeter P = 2 * (l + W)
+        perimeter = 0;
         for (Map.Entry<String, Double> entry : quadrangleData.entrySet()) {
-            System.out.println(entry.getKey() + " --> " + entry.getValue());
+            perimeter += entry.getValue();
+        }
+        perimeter *= 2;
+    }
+
+    @Override
+    public void countArea() {
+        // area A = w * l
+        area = 1;
+        for (Map.Entry<String, Double> entry : quadrangleData.entrySet()) {
+            area *=entry.getValue();
         }
     }
 

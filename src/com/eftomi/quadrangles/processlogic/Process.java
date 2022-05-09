@@ -43,11 +43,12 @@ public class Process {
     }
 
     private void run(Scanner scanner) {
-        UserInputReader uir = new UserInputReader(scanner);
-        int select = uir.readUserInput();
-        IQuadrangle IQuadrangle = Quadrangle.chooseQuadrangle(select);
-
-        IQuadrangle.computeWithQuadranleData(scanner);
+        do {
+            UserInputReader uir = new UserInputReader(scanner);
+            int select = uir.readUserInput();
+            IQuadrangle IQuadrangle = Quadrangle.chooseQuadrangle(select);
+            IQuadrangle.computeWithQuadrangleData(scanner);
+        } while (true);
 
     }
 }

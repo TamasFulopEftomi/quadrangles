@@ -21,6 +21,5 @@ public enum UOM {
                 '}';
     }
 
-    // számolás azonos mértékegységen történik belül
 }
 
