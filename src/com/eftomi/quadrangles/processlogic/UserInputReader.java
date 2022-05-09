@@ -25,6 +25,4 @@ public class UserInputReader {
         return select;
     }
 
-
-
 }

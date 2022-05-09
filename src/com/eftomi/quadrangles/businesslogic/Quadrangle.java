@@ -2,7 +2,7 @@ package com.eftomi.quadrangles.businesslogic;
 
 import com.eftomi.quadrangles.enums.UOM;
 
-import java.util.Scanner;
+import java.util.*;
 
 public abstract class Quadrangle implements IQuadrangle {
 
@@ -35,7 +35,15 @@ public abstract class Quadrangle implements IQuadrangle {
         String unitOfMeasure;
         boolean badUnitOfMeasure = true;
         do {
-            System.out.print("You choose Rectangle. Please enter the unit of measure: ");
+            System.out.print("Please enter the unit of measure from the bracket (");
+            UOM[] UOMvalues = UOM.values();
+            for (int i = 0; i < UOMvalues.length; i++) {
+                System.out.print(UOMvalues[i].getMeasure());
+                if (i < UOMvalues.length -1 ) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.print("): ");
             unitOfMeasure = scanner.nextLine();
             UOM[] values = UOM.values();
             for (UOM uom : values) {
@@ -49,6 +57,24 @@ public abstract class Quadrangle implements IQuadrangle {
         }
         while (badUnitOfMeasure);
         return unitOfMeasure;
+    }
+
+    public Map<String, Double> readQuadrangleData(Scanner scanner, List<String> parameters, String UOM) {
+        Map<String, Double> quadrangleData = new HashMap<>();
+        double num;
+        boolean negative;
+        for (String parameter : parameters) {
+            do {
+                System.out.printf("Please enter the value of %s in (%s): ", parameter, UOM);
+                num = scanner.nextDouble();
+                negative = num < 0;
+                if (negative) {
+                    System.out.printf("\nValue of %s can not be negative!", parameter);
+                }
+            } while (negative);
+            quadrangleData.put(parameter, num);
+        }
+        return quadrangleData;
     }
 
 }

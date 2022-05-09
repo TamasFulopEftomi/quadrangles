@@ -40,8 +40,6 @@ public class Process {
         try (Scanner scanner = new Scanner(System.in)) {
             new Process().run(scanner);
         }
-
-
     }
 
     private void run(Scanner scanner) {
@@ -49,7 +47,7 @@ public class Process {
         int select = uir.readUserInput();
         IQuadrangle IQuadrangle = Quadrangle.chooseQuadrangle(select);
 
-        IQuadrangle.readQuadrangleData(scanner);
+        IQuadrangle.computeWithQuadranleData(scanner);
 
     }
 }
