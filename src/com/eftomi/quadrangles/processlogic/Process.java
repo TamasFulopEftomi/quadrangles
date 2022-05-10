@@ -43,6 +43,7 @@ public class Process {
     }
 
     private void run(Scanner scanner) {
+        System.out.println("Welcome! This app can help you to compute area and perimeter for different quadrangles.\n");
         do {
             UserInputReader uir = new UserInputReader(scanner);
             int select = uir.readUserInput();
