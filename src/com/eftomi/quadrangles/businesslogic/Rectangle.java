@@ -13,8 +13,7 @@ public class Rectangle extends Quadrangle {
     @Override
     public void computeWithQuadrangleData(Scanner scanner) {
         actualQuadrangle();
-        UOM = super.readUOM(scanner);
-        quadrangleData = readQuadrangleData(scanner, parameters, UOM);
+        quadrangleData = readQuadrangleData(scanner, parameters);
         countPerimeter();
         countArea();
         printResults(area, perimeter, UOM);

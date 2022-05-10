@@ -34,48 +34,86 @@ public abstract class Quadrangle implements IQuadrangle {
         return IQuadrangle;
     }
 
-    public String readUOM(Scanner scanner) {
+//    public String readUOM(Scanner scanner) {
+//        String unitOfMeasure;
+//        boolean badUnitOfMeasure = true;
+//        do {
+//            System.out.print("Please enter the unit of measure from the bracket (");
+//            UOM[] UOMvalues = UOM.values();
+//            for (int i = 0; i < UOMvalues.length; i++) {
+//                System.out.print(UOMvalues[i].getMeasure());
+//                if (i < UOMvalues.length -1 ) {
+//                    System.out.print(", ");
+//                }
+//            }
+//            System.out.print("): ");
+//            unitOfMeasure = scanner.nextLine();
+//            UOM[] values = UOM.values();
+//            for (UOM uom : values) {
+//                if (uom.getMeasure().equals(unitOfMeasure)) {
+//                    badUnitOfMeasure = false;
+//                }
+//            }
+//            if (badUnitOfMeasure) {
+//                System.out.println("\nUnit of measure is not correct!");
+//            }
+//        }
+//        while (badUnitOfMeasure);
+//        return unitOfMeasure;
+//    }
+
+    public Map<String, Double> readQuadrangleData(Scanner scanner, List<String> parameters) {
+        Map<String, Double> quadrangleData = new HashMap<>();
         String unitOfMeasure;
         boolean badUnitOfMeasure = true;
-        do {
-            System.out.print("Please enter the unit of measure from the bracket (");
-            UOM[] UOMvalues = UOM.values();
-            for (int i = 0; i < UOMvalues.length; i++) {
-                System.out.print(UOMvalues[i].getMeasure());
-                if (i < UOMvalues.length -1 ) {
-                    System.out.print(", ");
-                }
-            }
-            System.out.print("): ");
-            unitOfMeasure = scanner.nextLine();
-            UOM[] values = UOM.values();
-            for (UOM uom : values) {
-                if (uom.getMeasure().equals(unitOfMeasure)) {
-                    badUnitOfMeasure = false;
-                }
-            }
-            if (badUnitOfMeasure) {
-                System.out.println("\nUnit of measure is not correct!");
-            }
-        }
-        while (badUnitOfMeasure);
-        return unitOfMeasure;
-    }
-
-    public Map<String, Double> readQuadrangleData(Scanner scanner, List<String> parameters, String UOM) {
-        Map<String, Double> quadrangleData = new HashMap<>();
-        double num;
+        String dataInput;
+        String dataArray[];
+        double num = 0;
         boolean negative;
         for (String parameter : parameters) {
             do {
-                System.out.printf("Please enter the value of %s (%s): ", parameter, UOM);
-                num = scanner.nextDouble();
+                do {
+                    System.out.printf("\nPlease enter the value of the %s and its UOM from the bracket (", parameter);
+                    UOM[] UOMvalues = UOM.values();
+                    for (int i = 0; i < UOMvalues.length; i++) {
+                        System.out.print(UOMvalues[i].getMeasure());
+                        if (i < UOMvalues.length - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.print("). Please enter one space between the two data: ");
+                    dataInput = scanner.nextLine();
+                    dataArray = dataInput.split(" ");
+                    if (dataArray.length != 2) {
+                        System.out.println("Please enter the data in this form: 88 cm");
+                    }
+                } while (dataArray.length != 2);
+                num = Double.parseDouble(dataArray[0]);
+                unitOfMeasure = dataArray[1];
                 negative = num < 0;
+                UOM[] values = UOM.values();
+                for (UOM uom : values) {
+                    if (uom.getMeasure().equals(unitOfMeasure)) {
+                        badUnitOfMeasure = false;
+                    }
+                }
+                if (badUnitOfMeasure) {
+                    System.out.println("\nUnit of measure is not correct!");
+                }
                 if (negative) {
                     System.out.printf("\nValue of %s can not be negative!", parameter);
                 }
-            } while (negative);
+            } while (negative || badUnitOfMeasure);
+
+            UOM[] values = UOM.values();
+            for (UOM uom : values) {
+                if (uom.getMeasure().equals(unitOfMeasure)) {
+                    num *= uom.getMultiplierToMm();
+                }
+            }
+
             quadrangleData.put(parameter, num);
+            System.out.println("Parameter: " + parameter + ", value: " + num);
         }
         return quadrangleData;
     }
