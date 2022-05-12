@@ -34,34 +34,6 @@ public abstract class Quadrangle implements IQuadrangle {
         return IQuadrangle;
     }
 
-//    public String readUOM(Scanner scanner) {
-//        String unitOfMeasure;
-//        boolean badUnitOfMeasure = true;
-//        do {
-//            System.out.print("Please enter the unit of measure from the bracket (");
-//            UOM[] UOMvalues = UOM.values();
-//            for (int i = 0; i < UOMvalues.length; i++) {
-//                System.out.print(UOMvalues[i].getMeasure());
-//                if (i < UOMvalues.length -1 ) {
-//                    System.out.print(", ");
-//                }
-//            }
-//            System.out.print("): ");
-//            unitOfMeasure = scanner.nextLine();
-//            UOM[] values = UOM.values();
-//            for (UOM uom : values) {
-//                if (uom.getMeasure().equals(unitOfMeasure)) {
-//                    badUnitOfMeasure = false;
-//                }
-//            }
-//            if (badUnitOfMeasure) {
-//                System.out.println("\nUnit of measure is not correct!");
-//            }
-//        }
-//        while (badUnitOfMeasure);
-//        return unitOfMeasure;
-//    }
-
     public Map<String, Double> readQuadrangleData(Scanner scanner, List<String> parameters) {
         Map<String, Double> quadrangleData = new HashMap<>();
         String unitOfMeasure;
@@ -91,12 +63,7 @@ public abstract class Quadrangle implements IQuadrangle {
                 num = Double.parseDouble(dataArray[0]);
                 unitOfMeasure = dataArray[1];
                 negative = num < 0;
-                UOM[] values = UOM.values();
-                for (UOM uom : values) {
-                    if (uom.getMeasure().equals(unitOfMeasure)) {
-                        badUnitOfMeasure = false;
-                    }
-                }
+                badUnitOfMeasure = isBadUnitOfMeasure(unitOfMeasure, badUnitOfMeasure);
                 if (badUnitOfMeasure) {
                     System.out.println("\nUnit of measure is not correct!");
                 }
@@ -111,15 +78,14 @@ public abstract class Quadrangle implements IQuadrangle {
                     num *= uom.getMultiplierToMm();
                 }
             }
-
             quadrangleData.put(parameter, num);
-            System.out.println("Parameter: " + parameter + ", value: " + num);
         }
+
         return quadrangleData;
     }
 
     public void actualQuadrangle() {
-        System.out.println("\nYou choose " + toString() + ".");
+        System.out.println("\n***** You choose " + toString() + ". *****");
     }
 
     public double roundedResult(double rawDouble) {
@@ -128,10 +94,65 @@ public abstract class Quadrangle implements IQuadrangle {
         return bigDecimal.doubleValue();
     }
 
-    public void printResults(double area, double perimeter, String UOM) {
+    public void printResults(double area, double perimeter, Scanner scanner) {
+        boolean badUnitOfMeasure = true;
+        String unitOfMeasure;
+        do {
+            System.out.print("\nPlease enter the UOM of the result from the bracket (");
+            UOM[] UOMvalues = UOM.values();
+            for (int i = 0; i < UOMvalues.length; i++) {
+                System.out.print(UOMvalues[i].getMeasure());
+                if (i < UOMvalues.length - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.print("): ");
+            unitOfMeasure = scanner.nextLine();
+            badUnitOfMeasure = isBadUnitOfMeasure(unitOfMeasure, badUnitOfMeasure);
+            if (badUnitOfMeasure) {
+                System.out.println("\nUnit of measure is not correct!");
+            }
+        } while (badUnitOfMeasure);
+
+        int divider = getDivider(unitOfMeasure);
+        double perimeterInUOM = perimeter / divider;
+        double areaInUOM = area / Math.pow(divider, 2);
+
         System.out.println("\nThe results of the calculation is the next:");
-        System.out.println("\tThe perimeter of the " + toString() + " is " + roundedResult(perimeter) + UOM + ".");
-        System.out.println("\tThe area of the " + toString() + " is " + roundedResult(area) + UOM + "^2.\n");
+        System.out.println("\tThe perimeter of the " + toString() + " is " + roundedResult(perimeterInUOM) + unitOfMeasure + ".");
+        System.out.println("\tThe area of the " + toString() + " is " + roundedResult(areaInUOM) + unitOfMeasure + "^2.\n");
+    }
+
+    private boolean isBadUnitOfMeasure(String unitOfMeasure, boolean badUnitOfMeasure) {
+        UOM[] values = UOM.values();
+        for (UOM uom : values) {
+            if (uom.getMeasure().equals(unitOfMeasure)) {
+                badUnitOfMeasure = false;
+            }
+        }
+        return badUnitOfMeasure;
+    }
+
+    private int getDivider(String unitOfMeasure) {
+        int divider = 0;
+        switch (unitOfMeasure) {
+            case "mm":
+                divider = 1;
+                break;
+            case "cm":
+                divider = 10;
+                break;
+            case "dm":
+                divider = 100;
+                break;
+            case "m":
+                divider = 1_000;
+                break;
+            case "km":
+                divider = 1_000_000;
+                break;
+        }
+        return divider;
     }
 
 }

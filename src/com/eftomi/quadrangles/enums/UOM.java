@@ -21,12 +21,5 @@ public enum UOM {
         return multiplierToMm;
     }
 
-    @Override
-    public String toString() {
-        return "UOM{" +
-                "measure='" + measure + '\'' +
-                '}';
-    }
-
 }
 

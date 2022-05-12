@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class Deltoid extends Quadrangle {
     private Scanner scanner;
-    private String UOM;
     private List<String> parameters = Arrays.asList("length", "width", "short diagonal", "long diagonal");
     private Map<String, Double> quadrangleData;
     private double area;
@@ -19,7 +18,7 @@ public class Deltoid extends Quadrangle {
         quadrangleData = readQuadrangleData(scanner, parameters);
         countPerimeter();
         countArea();
-        printResults(area, perimeter, UOM);
+        printResults(area, perimeter, scanner);
     }
 
     @Override

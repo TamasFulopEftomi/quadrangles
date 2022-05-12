@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Rectangle extends Quadrangle {
     private Scanner scanner;
-    private String UOM;
     private List<String> parameters = Arrays.asList("width", "length");
     private Map<String, Double> quadrangleData;
     private double area;
@@ -16,7 +15,7 @@ public class Rectangle extends Quadrangle {
         quadrangleData = readQuadrangleData(scanner, parameters);
         countPerimeter();
         countArea();
-        printResults(area, perimeter, UOM);
+        printResults(area, perimeter, scanner);
     }
 
     @Override
